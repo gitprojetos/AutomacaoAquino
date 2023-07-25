@@ -18,6 +18,7 @@ public class TesteCampoTreinamento {
 		WebDriver driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		driver.close();
 
 	}
 
@@ -84,22 +85,21 @@ public class TesteCampoTreinamento {
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
 		Select select = new Select(element);
-		List<WebElement> options = select.getOptions().get;
+		List<WebElement> options = select.getOptions();
 		assertEquals(8, options.size());
-		
+
 		boolean encontrou = false;
-		
+
 		for (WebElement webElement : options) {
-			if(webElement.getText().equals("Mestrado")) {
+			if (webElement.getText().equals("Mestrado")) {
 				encontrou = true;
 			}
 		}
 		Assert.assertTrue(encontrou);
-	
-		
+
 		driver.close();
 	}
-	
+
 	@Test
 	public void deveVerificaValoresComboMultipaEscolha() {
 		WebDriver driver = new FirefoxDriver();
@@ -112,14 +112,14 @@ public class TesteCampoTreinamento {
 		select.selectByVisibleText("O que eh esporte?");
 		List<WebElement> options = select.getAllSelectedOptions();
 		Assert.assertEquals(3, options.size());
-		
+
 		select.deselectByVisibleText("Corrida");
 		List<WebElement> optionsNovo = select.getAllSelectedOptions();
 		Assert.assertEquals(2, optionsNovo.size());
-		
+
 		driver.close();
 	}
-	
+
 	@Test
 	public void deveInteragirComBotao() {
 		WebDriver driver = new FirefoxDriver();
@@ -130,12 +130,41 @@ public class TesteCampoTreinamento {
 		Assert.assertEquals("Obrigado!", textBotãoClidado);
 		driver.close();
 	}
-	
+
 	@Test
 	public void deveInteragirComLink() {
 		WebDriver driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		// driver.findElement(By.xpath("//a[@onclick='javascript:voltou()']")).click();
+		driver.findElement(By.linkText("Voltar")).click();
+		driver.close();
+
+	}
+
+	@Test
+	public void deveBuscarTextosNaPagina() {
+		WebDriver driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+//		System.out.println(driver.findElement(By.tagName("Body")).getText());
+//		Assert.assertTrue(driver.findElement(By.tagName("Body")).getText().contains("Campo de Treinamento"));
+
+		Assert.assertEquals("Campo de Treinamento", driver.findElement(By.tagName("h3")).getText());
+		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...",
+				driver.findElement(By.className("facilAchar")).getText());
+		driver.close();
+
+	}
+
+	@Test
+	public void deveInteragirComAlertSimples() {
+		WebDriver driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		driver.findElement(By.id("alert")).click();
+		driver.switchTo().alert().accept();
+		driver.close();
 	}
 
 }
