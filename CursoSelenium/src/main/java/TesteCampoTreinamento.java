@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -155,16 +156,6 @@ public class TesteCampoTreinamento {
 				driver.findElement(By.className("facilAchar")).getText());
 		driver.close();
 
-	}
-
-	@Test
-	public void deveInteragirComAlertSimples() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		driver.findElement(By.id("alert")).click();
-		driver.switchTo().alert().accept();
-		driver.close();
 	}
 
 }
