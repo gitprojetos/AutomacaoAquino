@@ -18,6 +18,7 @@ public class TesteRegrasCadastraisParameterized {
 
 	private WebDriver driver;
 	private CampoTreinamentoPage page;
+	private DSL dsl;
 
 	@Parameter
 	public String nome;
