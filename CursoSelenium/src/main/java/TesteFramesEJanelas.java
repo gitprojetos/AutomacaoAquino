@@ -4,17 +4,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class TesteFramesEJanelas {
 
 	public WebDriver driver;
+	public DSL dsl;
 
 	@Before
 	public void inicializa() {
 		driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
 	}
 
 	@Test
@@ -50,6 +53,18 @@ public class TesteFramesEJanelas {
 		driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
 		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("E agora!");
 
+	}
+
+	@Test
+	public void deveInteragirComFrameEcondido() {
+		WebElement frame = driver.findElement(By.id("frame2"));
+		dsl.executarJS("window.scrollBy(0,arguments[0])", frame.getLocation().y);
+		driver.switchTo().frame("frame2");
+		driver.findElement(By.id("frameButton")).click();
+		String msg = driver.switchTo().alert().getText();
+		Assert.assertEquals("Frame OK!", msg);
+		driver.switchTo().alert().accept();
+		driver.switchTo().defaultContent();
 	}
 
 	@After

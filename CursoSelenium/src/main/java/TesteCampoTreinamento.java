@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -119,10 +120,21 @@ public class TesteCampoTreinamento {
 		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.obterTexto("facilAchar"));
 
 	}
+	
+	@Test
+	public void testJavaScript() {
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		//js.executeScript("alert('Testando JS via Selenium')");
+		//js.executeScript("document.getElementById('elementosForm:nome').value='Escrita via Js'");
+		//js.executeScript("document.getElementById('elementosForm:nome').type='radio'");
+		
+		WebElement element = driver.findElement(By.id("elementosForm:nome"));
+		js.executeScript("arguments[0].style.border = arguments[1]", element, "solid 4px red");
+	}
 
 	@After
 	public void finaliza() {
-		driver.quit();
+		//driver.quit();
 	}
 
 }
