@@ -1,21 +1,20 @@
+package br.ce.wcaquino.test;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+
+import br.ce.wcaquino.core.DriverFactory;
+import br.ce.wcaquino.page.*;
 
 public class TesteRegraDeNegocio {
 
-	private WebDriver driver;
 	private CampoTreinamentoPage page;
 
 	@Before
 	public void inicializa() {
-		driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		page = new CampoTreinamentoPage(driver);
+		DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		page = new CampoTreinamentoPage();
 	}
 
 	@Test
@@ -73,7 +72,7 @@ public class TesteRegraDeNegocio {
 	
 	@After
 	public void finaliza() {
-		driver.quit();
+		DriverFactory.killDriver();
 	}
 
 }

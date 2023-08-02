@@ -1,3 +1,4 @@
+package br.ce.wcaquino.test;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
@@ -8,22 +9,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class TesteCampoTreinamento {
+import br.ce.wcaquino.core.DSL;
+import br.ce.wcaquino.core.DriverFactory;
 
-	private WebDriver driver;
+public class TesteCampoTreinamento {
+	
 	private DSL dsl;
 
 	@Before
 	public void inicializa() {
-		driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		dsl = new DSL(driver);
+		DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL();
+
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class TesteCampoTreinamento {
 
 	@Test
 	public void deveVerificaValoresCombo() {
-		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
+		WebElement element = DriverFactory.getDriver().findElement(By.id("elementosForm:escolaridade"));
 		Select select = new Select(element);
 		List<WebElement> options = select.getOptions();
 		assertEquals(8, options.size());
@@ -85,7 +85,7 @@ public class TesteCampoTreinamento {
 		dsl.selecionarComboByVisibleText("elementosForm:esportes", "Corrida");
 		dsl.selecionarComboByVisibleText("elementosForm:esportes", "O que eh esporte?");
 
-		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
+		WebElement element = DriverFactory.getDriver().findElement(By.id("elementosForm:esportes"));
 		Select select = new Select(element);
 		List<WebElement> options = select.getAllSelectedOptions();
 		Assert.assertEquals(3, options.size());
@@ -106,35 +106,48 @@ public class TesteCampoTreinamento {
 
 	@Test
 	public void deveInteragirComLink() {
-		// driver.findElement(By.xpath("//a[@onclick='javascript:voltou()']")).click();
+		// DriverFactory.getDriver().findElement(By.xpath("//a[@onclick='javascript:voltou()']")).click();
 		dsl.clicarLink("Voltar");
 
 	}
 
 	@Test
 	public void deveBuscarTextosNaPagina() {
-		// System.out.println(driver.findElement(By.tagName("Body")).getText());
-//		Assert.assertTrue(driver.findElement(By.tagName("Body")).getText().contains("Campo de Treinamento"));
+		// System.out.println(DriverFactory.getDriver().findElement(By.tagName("Body")).getText());
+//		Assert.assertTrue(DriverFactory.getDriver().findElement(By.tagName("Body")).getText().contains("Campo de Treinamento"));
 
 		Assert.assertEquals("Campo de Treinamento", dsl.obterTexto(By.tagName("h3")));
 		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.obterTexto("facilAchar"));
 
 	}
-	
+
 	@Test
 	public void testJavaScript() {
-		JavascriptExecutor js = (JavascriptExecutor)driver;
-		//js.executeScript("alert('Testando JS via Selenium')");
-		//js.executeScript("document.getElementById('elementosForm:nome').value='Escrita via Js'");
-		//js.executeScript("document.getElementById('elementosForm:nome').type='radio'");
-		
-		WebElement element = driver.findElement(By.id("elementosForm:nome"));
+		JavascriptExecutor js = (JavascriptExecutor) DriverFactory.getDriver();
+		// js.executeScript("alert('Testando JS via Selenium')");
+		// js.executeScript("document.getElementById('elementosForm:nome').value='Escrita
+		// via Js'");
+		// js.executeScript("document.getElementById('elementosForm:nome').type='radio'");
+
+		WebElement element = DriverFactory.getDriver().findElement(By.id("elementosForm:nome"));
 		js.executeScript("arguments[0].style.border = arguments[1]", element, "solid 4px red");
+	}
+
+	@Test
+	public void deveClicarBotaoTabela() {
+
+		/*
+		 * *Vamos clicar na tabela, onde tiver o nome Maria na coluna NOME para clicar
+		 * no botão.
+		 */
+
+		dsl.clicarBotaoTabela("Nome", "Maria", "//table[@id='elementosForm:tableUsuarios']");
+
 	}
 
 	@After
 	public void finaliza() {
-		//driver.quit();
+		DriverFactory.killDriver();
 	}
 
 }
