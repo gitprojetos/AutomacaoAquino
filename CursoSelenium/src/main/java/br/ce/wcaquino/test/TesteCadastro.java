@@ -1,23 +1,22 @@
-import org.junit.After;
+package br.ce.wcaquino.test;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class TesteCadastro {
+import br.ce.wcaquino.core.BaseTest;
+import br.ce.wcaquino.core.DriverFactory;
+import br.ce.wcaquino.page.CampoTreinamentoPage;
 
-	private WebDriver driver;
-	private DSL dsl;
+public class TesteCadastro extends BaseTest{
+
 	private CampoTreinamentoPage page;
 
 	@Before
 	public void inicializa() {
-		driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		dsl = new DSL(driver);
-		page = new CampoTreinamentoPage(driver);
+		DriverFactory.getDriver()
+				.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		page = new CampoTreinamentoPage();
+
 	}
 
 	@Test
@@ -42,9 +41,5 @@ public class TesteCadastro {
 
 	}
 
-	@After
-	public void finaliza() {
-		driver.quit();
-	}
 
 }
